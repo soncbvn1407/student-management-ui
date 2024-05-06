@@ -21,12 +21,13 @@ export default function CampusForm(props) {
       capacity: capacity,
     };
 
-    if (campus && building && number && capacity) {
+    if (campus!=="" && building!=="" && number!=="" && capacity!=="") {
       if (roomId) {
         axios.put(process.env.REACT_APP_HOST_URL + "/campus/room?id=" + roomId, room).then((res) => {
           if (res.status === 200) {
             props.closeHandler();
             props.refresh();
+            props.sendToast("success", "Room Edited Successfully!");
           }
         });
       } else {
@@ -34,6 +35,7 @@ export default function CampusForm(props) {
           if (res.status === 200) {
             props.closeHandler();
             props.refresh();
+            props.sendToast("success", "Room Added Successfully!");
           }
         });
       }

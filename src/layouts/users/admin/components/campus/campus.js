@@ -395,6 +395,7 @@ export default function CampusAdmin(props) {
                         closeHandler={handleCloseModal}
                         room={room}
                         refresh={fetchRows}
+                        sendToast={props.sendToast}
                     />
                 </DialogContent>
             </Dialog>
