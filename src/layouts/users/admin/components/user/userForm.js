@@ -137,6 +137,7 @@ export default function UserForm(props) {
           }
         });
       }
+      props.closeHandler()
     }
   };
 

@@ -223,19 +223,24 @@ export default function UsersAdmin(props) {
 
     const handleDelete = (id) => {
         let user = fetchDocuments(users, id)
-        axios.delete(process.env.REACT_APP_HOST_URL + "/user", {
-            params: {
-                id: user.id,
-                role: user.role
-            }
-        }).then((res) => {
-            if (res.data.status) {
-                fetchRows();
-            } else {
-                props.sendToast("error", res.data.data);
-            }
-        })
+        const confirm = window.confirm("This user will be deleted, are you sure? This change cannot be undone!")
+        if (confirm) {
+            axios.delete(process.env.REACT_APP_HOST_URL + "/user", {
+                params: {
+                    id: user.id,
+                    role: user.role
+                }
+            }).then((res) => {
+                if (res.data.status) {
+                    fetchRows();
+                    props.sendToast("success", "User deleted")
+                } else {
+                    props.sendToast("error", res.data.data);
+                }
+            })
+        }
     };
+
 
     const handleClose = () => {
         setOpen(false);
