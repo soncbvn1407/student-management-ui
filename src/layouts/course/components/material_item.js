@@ -46,7 +46,7 @@ export default function MaterialItem(props) {
                     marginRight: '10px'
                 }} onClick={() => {
                     props.material.type === "1" ?
-                        downloadFile(props.material.path, props.material.name) : window.open(props.material.url)
+                        downloadFile(process.env.REACT_APP_HOST_URL + props.material.path + props.material.name, props.material.name) : window.open(props.material.url)
                 }} variant="outlined">{
                         props.material.type === "1" ? props.material.name : props.material.url}
                 </Button>

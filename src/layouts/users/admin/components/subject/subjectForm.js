@@ -24,9 +24,18 @@ export default function SubjectForm(props) {
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
+  const validateFormData = () => {
+
+  }
+
 
   const handleConfirm = (e) => {
     e.preventDefault();
+
+    if (!validateFormData()) {
+      return;
+    }
+
     if (formData.name && formData.department && formData.subjectId && formData.level && formData.slots) {
       if (_id) {
         axios

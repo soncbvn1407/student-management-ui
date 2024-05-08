@@ -58,7 +58,6 @@ export default function GroupWidget(props) {
         <div className="big-widget">
           <CustomTable
             handleRefreshEntry={props.handleRefreshEntry}
-            isCampusControl={true}
             handleSearchInfo={props.handleSearchInfo}
             handleGetSelected={props.handleGetSelected}
             getSelectedId={props.getSelectedId}

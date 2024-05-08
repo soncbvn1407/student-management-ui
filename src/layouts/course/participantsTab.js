@@ -5,9 +5,13 @@ import { cacheData, getArrayCache, lecturerItems } from "../../utils/dataOptimiz
 
 import AddIcon from '@mui/icons-material/Add';
 import RefreshIcon from '@mui/icons-material/Refresh'
+import { decodeToken } from "../../utils/utils";
 
 export default function ParticipantsTab(props) {
     const course = props.course;
+
+    const token = localStorage.getItem("access_token");
+    const decodedToken = decodeToken(token);
 
     const [participants, setParticipants] = useState([]);
 
@@ -25,7 +29,6 @@ export default function ParticipantsTab(props) {
         try {
             axios.get(process.env.REACT_APP_HOST_URL + "/course/participants?id=" + course.id).then((res) => {
                 if (res.data.status) {
-                    console.log(res.data.data)
                     setParticipants(res.data.data);
                     cacheData(lecturerItems.Participants, res.data.data)
                 } else {
@@ -72,30 +75,35 @@ export default function ParticipantsTab(props) {
                 {participants.map((participant, index) => {
                     console.log(participant)
                     return (
-                        <Grid item sm={12}>
+                        <Grid item sm={decodedToken.role === 1 ? 4 : 12}>
                             <Card sx={{ padding: '15px' }}>
                                 <Grid container alignItems="center">
-                                    <Grid item xs={1}>
+                                    <Grid item xs={decodedToken.role === 1 ? 2 : 1}>
                                         No. {index + 1}
                                     </Grid>
-                                    <Grid item xs={2}>
+                                    <Grid item xs={decodedToken.role === 1 ? 4 : 2}>
                                         {participant.student_id}
                                     </Grid>
-                                    <Grid item xs={2}>
+                                    <Grid item xs={decodedToken.role === 1 ? 4 : 2}>
                                         {participant.dob}
                                     </Grid>
-                                    <Grid item xs={2}>
-                                        <strong>Grade:{" "}</strong>{participant.grade === "" ? "Not yet" : <strong style={{ color: 'red' }}>{participant.grade}</strong>}
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <strong>Grade Text:{" "}</strong>{<strong style={{ color: 'red' }}>{participant.gradeText}</strong> ?? ""}
-                                    </Grid>
-                                    <Grid item xs={3} style={{
-                                        justifyContent: 'end',
-                                        textAlign: 'end'
-                                    }}>
-                                        <strong>Status:{" "}</strong>{participant.status === true ? "Activated" : "Disabled"}
-                                    </Grid>
+                                    {
+                                        decodedToken.role === 1 ? <></> : <><Grid item xs={2}>
+                                            <strong>Grade:{" "}</strong>{participant.grade === "" ? "Not yet" : <strong style={{ color: 'red' }}>
+                                                {participant.grade}</strong>}
+                                        </Grid>
+                                            <Grid item xs={2}>
+                                                <strong>Grade Text:{" "}</strong>{<strong style={{ color: 'red' }}>
+                                                    {participant.gradeText}</strong> ?? ""}
+                                            </Grid>
+                                            <Grid item xs={3} style={{
+                                                justifyContent: 'end',
+                                                textAlign: 'end'
+                                            }}>
+                                                <strong>Status:{" "}</strong>{participant.status === true ? "Activated" : "Disabled"}
+                                            </Grid></>
+                                    }
+
                                 </Grid>
                             </Card>
                         </Grid>

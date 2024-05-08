@@ -107,6 +107,7 @@ export default function GroupForm(props) {
           for (let i = 0; i < res.data.data.length; i++) {
             data.push(res.data.data[i]);
           }
+          console.log(data)
           setLecturers(data);
         } else {
           toast.error(res.data.data, {
@@ -255,7 +256,7 @@ export default function GroupForm(props) {
                       >
                         {lecturers.map((lecturer, index) => (
                           <MenuItem key={"Lecturer-number-" + (index + 1)} value={lecturer.id}>
-                            {lecturer.username}
+                            {lecturer.id}
                           </MenuItem>
                         ))}
                       </Select>

@@ -52,6 +52,12 @@ const headCells = [
         disablePadding: false,
         label: "Capacity",
     },
+    {
+        id: "test",
+        numeric: true,
+        disablePadding: false,
+        label: "Test",
+    },
 ];
 
 export default function CampusAdmin(props) {
@@ -392,10 +398,10 @@ export default function CampusAdmin(props) {
                         boxShadow: 12,
                     }}>
                     <CampusForm
+                        sendToast={props.sendToast}
                         closeHandler={handleCloseModal}
                         room={room}
                         refresh={fetchRows}
-                        sendToast={props.sendToast}
                     />
                 </DialogContent>
             </Dialog>

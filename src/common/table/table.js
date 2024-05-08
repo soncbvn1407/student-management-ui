@@ -1,7 +1,6 @@
 import {
     useState,
     useMemo,
-    useEffect,
     forwardRef,
     useImperativeHandle,
 } from "react";
@@ -12,7 +11,6 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import {
     formatSecondsToDate,
@@ -183,7 +181,7 @@ export default forwardRef(function CustomTable(props, ref) {
                                                                     "row-" +
                                                                     props
                                                                         .colNames[
-                                                                        index
+                                                                    index
                                                                     ]
                                                                 }
                                                                 component="th"
@@ -191,61 +189,62 @@ export default forwardRef(function CustomTable(props, ref) {
                                                                 scope="row"
                                                                 padding="none">
                                                                 {col ===
-                                                                "status"
+                                                                    "status"
                                                                     ? row[
-                                                                          props
-                                                                              .colNames[
-                                                                              index
-                                                                          ]
-                                                                      ]
+                                                                        props
+                                                                            .colNames[
+                                                                        index
+                                                                        ]
+                                                                    ]
                                                                         ? "Activated"
                                                                         : "Deactivated"
                                                                     : row[
-                                                                          props
-                                                                              .colNames[
-                                                                              index
-                                                                          ]
-                                                                      ]}
+                                                                    props
+                                                                        .colNames[
+                                                                    index
+                                                                    ]
+                                                                    ]}
                                                             </TableCell>
                                                         ) : props.colNames[
-                                                              index
-                                                          ] === "date" ? (
+                                                            index
+                                                        ] === "date" ? (
                                                             <TableCell
                                                                 key={
                                                                     "row-" +
                                                                     props
                                                                         .colNames[
-                                                                        index
+                                                                    index
                                                                     ]
                                                                 }
                                                                 align="right">
                                                                 {formatSecondsToDate(
                                                                     row[
-                                                                        props
-                                                                            .colNames[
-                                                                            index
-                                                                        ]
+                                                                    props
+                                                                        .colNames[
+                                                                    index
+                                                                    ]
                                                                     ]
                                                                 ) ?? "N/A"}
                                                             </TableCell>
-                                                        ) : (
-                                                            <TableCell
-                                                                key={
-                                                                    "row-" +
-                                                                    props
-                                                                        .colNames[
+                                                        )
+                                                            : (
+                                                                <TableCell
+                                                                    key={
+                                                                        "row-" +
+                                                                        props
+                                                                            .colNames[
                                                                         index
-                                                                    ]
-                                                                }
-                                                                align="right">
-                                                                {row[
-                                                                    props
-                                                                        .colNames[
+                                                                        ]
+                                                                    }
+                                                                    align="right">
+                                                                    {row[
+                                                                        props
+                                                                            .colNames[
                                                                         index
-                                                                    ]
-                                                                ] ?? "N/A"}
-                                                            </TableCell>
-                                                        );
+                                                                        ]
+                                                                    ] ?? "N/A"}
+                                                                </TableCell>
+                                                            );
                                                     }
                                                 )}
                                             </TableRow>

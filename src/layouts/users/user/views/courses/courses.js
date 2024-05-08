@@ -52,7 +52,6 @@ export default function CoursesUser(props) {
                 let ongoing = [];
                 let others = [];
                 courses.forEach((course) => {
-                    console.log(new Date().getTime())
                     let currentTime = new Date().getTime()
                     if (course.endDate >= currentTime && course.startDate <= currentTime) {
                         ongoing.push(course)

@@ -116,10 +116,34 @@ export default function AttendanceAdmin(props) {
     const handleEdit = (id) => {
         let attendance = fetchDocuments(rowData, id)
         setAttendance(attendance)
+        setOpen(true);
     };
 
-    const handleDelete = (index) => {
-        props.sendToast("error", "Cannot delete student's attendance!");
+    const handleDelete = (id) => {
+        let attendance = fetchDocuments(rowData, id)
+        let confirm = window.confirm("Are you sure? This action cannot be reversed!")
+        if (confirm) {
+            try {
+                axios
+                    .delete(
+                        process.env.REACT_APP_HOST_URL + "/attendance", {
+                        params: {
+                            id: attendance.id
+                        }
+                    }
+                    )
+                    .then((res) => {
+                        if (!res.data.status) {
+                            props.sendToast("error", res.data.data);
+                        } else {
+                            props.sendToast("success", "Attendance deleted: " + id);
+                            fetchRows();
+                        }
+                    });
+            } catch (e) {
+                props.sendToast("error", e.toString());
+            }
+        }
     };
 
     const handleSearch = () => {
@@ -281,6 +305,7 @@ export default function AttendanceAdmin(props) {
                                 handleDelete={handleDelete}
                                 handleRefreshEntry={handleRefreshEntry}
                                 handleAddEntry={() => {
+                                    setAttendance({})
                                     handleOpen();
                                 }}
                             />
@@ -295,7 +320,11 @@ export default function AttendanceAdmin(props) {
                     zIndex: 100000,
                 }}>
                 <DialogContent>
-                    <AttendanceForm handleClose={handleClose} sendToast={props.sendToast} attendance={attendance} />
+                    <AttendanceForm
+                        refresh={fetchRows}
+                        handleClose={handleClose}
+                        sendToast={props.sendToast}
+                        attendance={attendance} />
                 </DialogContent>
             </Dialog>
         </>

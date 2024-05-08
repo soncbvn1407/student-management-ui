@@ -12,7 +12,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function FeedbackStudentTab(props) {
-    const hasExpired = props.course.endDate > new Date();
+    const hasExpired = props.course.endDate < new Date();
     const [canSubmit, setCanSubmit] = useState(true);
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
@@ -415,6 +415,9 @@ export default function FeedbackStudentTab(props) {
                             <Grid item xs={12}>
                                 <FormControl>
                                     <TextField
+                                        style={{
+                                            width: '200%'
+                                        }}
                                         name="comments"
                                         label="Do you have any additional comments?"
                                         value={feedback.comments}
@@ -423,7 +426,7 @@ export default function FeedbackStudentTab(props) {
                                 </FormControl>
                             </Grid>
                             <Grid item xs={12}>
-                                <Button onClick={(e) => sendFeedback(e)}>
+                                <Button variant="outlined" onClick={(e) => sendFeedback(e)}>
                                     Submit
                                 </Button>
                             </Grid>

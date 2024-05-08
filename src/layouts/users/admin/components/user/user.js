@@ -77,13 +77,6 @@ const headCells = [
         label: "Phone",
     },
     {
-        id: "status",
-        numeric: true,
-        disablePadding: false,
-        label: "Status",
-    },
-
-    {
         id: "city",
         numeric: true,
         disablePadding: false,
@@ -114,6 +107,7 @@ const headCells = [
 
 export default function UsersAdmin(props) {
     const tableRef = useRef();
+
     const constants = new Constants();
     const [user, setUser] = useState({});
 
@@ -223,24 +217,19 @@ export default function UsersAdmin(props) {
 
     const handleDelete = (id) => {
         let user = fetchDocuments(users, id)
-        const confirm = window.confirm("This user will be deleted, are you sure? This change cannot be undone!")
-        if (confirm) {
-            axios.delete(process.env.REACT_APP_HOST_URL + "/user", {
-                params: {
-                    id: user.id,
-                    role: user.role
-                }
-            }).then((res) => {
-                if (res.data.status) {
-                    fetchRows();
-                    props.sendToast("success", "User deleted")
-                } else {
-                    props.sendToast("error", res.data.data);
-                }
-            })
-        }
+        axios.delete(process.env.REACT_APP_HOST_URL + "/user", {
+            params: {
+                id: user.id,
+                role: user.role
+            }
+        }).then((res) => {
+            if (res.data.status) {
+                fetchRows();
+            } else {
+                props.sendToast("error", res.data.data);
+            }
+        })
     };
-
 
     const handleClose = () => {
         setOpen(false);
@@ -290,8 +279,8 @@ export default function UsersAdmin(props) {
                                         onChange={(e) => {
                                             setAuth(e.target.value);
                                         }}>
-                                        <MenuItem value={1}>User</MenuItem>
-                                        <MenuItem value={2}>Staff</MenuItem>
+                                        <MenuItem value={1}>Student</MenuItem>
+                                        <MenuItem value={2}>Lecturer</MenuItem>
                                         <MenuItem value={3}>Admin</MenuItem>
                                     </Select>
                                 </FormControl>
@@ -493,6 +482,7 @@ export default function UsersAdmin(props) {
                     <div className="big-widget">
                         <div className="campus-list">
                             <CustomTable
+                                isUserTable={true}
                                 ref={tableRef}
                                 handleAddEntry={() => {
                                     handleOpenModal();

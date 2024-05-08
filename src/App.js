@@ -33,15 +33,6 @@ function App() {
       />
       <Route element={<RequireAuth props={{ clearance: 1 }} />}>
         <Route
-          path="/grade"
-          element={
-            <>
-              <NavBar />
-              <GradeUser />
-            </>
-          }
-        />
-        <Route
           path="/course/:id"
           element={
             <>

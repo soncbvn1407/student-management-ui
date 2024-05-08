@@ -25,6 +25,8 @@ export function getAllHeaderColumns(headCells) {
     return keys;
 }
 
+export const stringRegex = /^\w+( \w+)*$/;
+
 export const host_url = "https://tch2202.onrender.com";
 
 export const formatSecondsToDate = (date) => {
@@ -189,6 +191,7 @@ export function getDayByNumber(number) {
 }
 
 export function downloadFile(url, filename) {
+    console.log(url)
     fetch(url)
         .then((response) => response.blob())
         .then((blob) => {

@@ -6,7 +6,7 @@ import { DesktopDatePicker } from "@mui/x-date-pickers";
 import address_tree from "../../../../../utils/address_tree.json";
 import { MuiTelInput } from "mui-tel-input";
 import { toast } from "react-toastify";
-import { filterByAttribute } from "../../../../../utils/utils";
+import { filterByAttribute, stringRegex } from "../../../../../utils/utils";
 
 export default function UserForm(props) {
   const id = props.user.id;
@@ -88,6 +88,54 @@ export default function UserForm(props) {
     });
   };
 
+  const validateFormData = () => {
+    console.log(formData)
+    if (!stringRegex.test(formData.firstName)) {
+      toast.error("Invalid first name! Must only contain characters from A to Z", {
+        position: "bottom-left",
+      });
+      return false;
+    }
+
+    if (!stringRegex.test(formData.lastName)) {
+      toast.error("Invalid last name! Must only contain characters from A to Z", {
+        position: "bottom-left",
+      });
+      return false;
+    }
+
+    if (formData.phone === "+84" || formData.phone.length !== 15) {
+      console.log(formData.phone.length)
+      toast.error("Must have valid phone number", {
+        position: "bottom-left",
+      });
+      return false;
+    }
+
+    if (formData.city === "" || !formData.city) {
+      toast.error("Must select city", {
+        position: "bottom-left",
+      });
+      return false;
+    }
+
+    if (formData.district === "" || !formData.district) {
+      toast.error("Must select district", {
+        position: "bottom-left",
+      });
+      return false;
+    }
+
+    if (formData.ward === "" || !formData.ward) {
+      toast.error("Must select ward", {
+        position: "bottom-left",
+      });
+      return false;
+    }
+
+    return true;
+  }
+
   const handleConfirm = (e) => {
     e.preventDefault();
     let user = {
@@ -105,6 +153,10 @@ export default function UserForm(props) {
       ward: formData.ward,
       address: formData.address,
     };
+
+    if (!validateFormData()) {
+      return;
+    }
 
     if (formData.auth && formData.firstName && formData.lastName && formData.dob && formData.phone && formData.department) {
       if (id) {
@@ -137,7 +189,10 @@ export default function UserForm(props) {
           }
         });
       }
-      props.closeHandler()
+    } else {
+      toast.error("Please fill all fields!", {
+        position: "bottom-left",
+      });
     }
   };
 
@@ -177,6 +232,7 @@ export default function UserForm(props) {
               <FormControl fullWidth>
                 <InputLabel id="auth-select-label">Auth Level</InputLabel>
                 <Select
+                  required
                   disabled={id ? true : false}
                   name="auth"
                   id="form-role"
@@ -195,6 +251,7 @@ export default function UserForm(props) {
               <FormControl fullWidth>
                 <InputLabel id="department-select-label">Department</InputLabel>
                 <Select
+                  required
                   name="department"
                   id="form-campus"
                   labelId="department-select-label"
@@ -211,15 +268,21 @@ export default function UserForm(props) {
               </FormControl>
             </Grid>
             <Grid item xs={12} md={6}>
-              <TextField name="firstName" onChange={(e) => handleChange(e)} value={formData.firstName} id="form-firstName" fullWidth label="First Name" variant="outlined" />
+              <TextField required name="firstName" onChange={(e) => handleChange(e)} value={formData.firstName} id="form-firstName" fullWidth label="First Name" variant="outlined" />
             </Grid>
             <Grid item xs={12} md={6}>
-              <TextField name="lastName" onChange={(e) => handleChange(e)} value={formData.lastName} id="form-lastName" fullWidth label="Last Name" variant="outlined" />
+              <TextField required name="lastName" onChange={(e) => handleChange(e)} value={formData.lastName} id="form-lastName" fullWidth label="Last Name" variant="outlined" />
             </Grid>
             <Grid item xs={12} md={6}>
               <DesktopDatePicker
-
-                value={formData.dob}
+                name="dob"
+                onChange={(value) => {
+                  setFormData((data) => ({
+                    ...data,
+                    dob: value
+                  }));
+                }}
+                value={dayjs(formData.dob)}
                 id="form-dob"
                 label="Date of Birth"
                 variant="outlined"

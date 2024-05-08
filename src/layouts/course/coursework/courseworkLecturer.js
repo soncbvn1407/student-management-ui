@@ -479,7 +479,7 @@ function GradingRow(props) {
                                                 width: 'fit-content',
                                                 fontSize: '12px'
                                             }} variant="contained" onClick={() => {
-                                                handleDownloadFile(submission.path + fileName, fileName)
+                                                handleDownloadFile(submission.path, fileName)
                                             }}>
                                                 {fileName}
                                             </Button>

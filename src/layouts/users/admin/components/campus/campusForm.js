@@ -12,6 +12,25 @@ export default function CampusForm(props) {
 
   const constants = new Constants();
 
+  const validateFormData = () => {
+    if (building === " " || building === "" || !building) {
+      props.sendToast("error", "Invalid building");
+      return false;
+    }
+
+    if (number === " " || number === "" || !number) {
+      props.sendToast("error", "Invalid number");
+      return false;
+    }
+
+    if (capacity <= 0 || isNaN(capacity)) {
+      props.sendToast("error", "Invalid capcity");
+      return false;
+    }
+
+    return true;
+  }
+
   const handleConfirm = () => {
 
     const room = {
@@ -21,21 +40,26 @@ export default function CampusForm(props) {
       capacity: capacity,
     };
 
-    if (campus!=="" && building!=="" && number!=="" && capacity!=="") {
+    if (!validateFormData()) {
+
+      return;
+    }
+
+    if (campus && building && number && capacity) {
       if (roomId) {
         axios.put(process.env.REACT_APP_HOST_URL + "/campus/room?id=" + roomId, room).then((res) => {
           if (res.status === 200) {
+            props.sendToast("success", "Room edited")
             props.closeHandler();
             props.refresh();
-            props.sendToast("success", "Room Edited Successfully!");
           }
         });
       } else {
         axios.post(process.env.REACT_APP_HOST_URL + "/campus/room", room).then((res) => {
           if (res.status === 200) {
+            props.sendToast("success", "Room added")
             props.closeHandler();
             props.refresh();
-            props.sendToast("success", "Room Added Successfully!");
           }
         });
       }

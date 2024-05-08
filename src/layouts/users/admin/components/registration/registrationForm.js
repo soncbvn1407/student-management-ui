@@ -82,14 +82,17 @@ export default function RegistrationForm(props) {
         }));
 
         if (name === "group_id") {
-            const segments = value.split("-");
+            const segments = value.split("-"); // [F2G, SU, 23, GCH, Final Project 3]
             const registrations = getCache(items.Registration);
 
+            // Filter user co role student & same department as the course
             let students = users.filter((u) => u.role === 1 && u.department_id === segments[3])
             students = students.filter((user) => {
-                return registrations.filter((r) => r.student_id === user.id).length === 0
+                return registrations.filter(
+                    // this course registered student in registration table
+                    (r) => r.student_id === user.id && r.group_id === value).length === 0
             })
-            console.log(students)
+
             setStudents(students);
         }
 

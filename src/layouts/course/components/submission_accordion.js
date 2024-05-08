@@ -11,11 +11,6 @@ import {
     Grid,
     Stack,
     Chip,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogContentText,
-    DialogActions,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useEffect, useState } from "react";
@@ -124,7 +119,7 @@ export default function SubmmissionAccordion(props) {
                     .delete(process.env.REACT_APP_HOST_URL + "/submission/file", {
                         params: {
                             course_id: props.course.id,
-                            assignment_id: props.assignment.name,
+                            assignment_id: props.assignment.id,
                             user_id: props.decoded.id,
                             fileIndex: selected,
                             filePath: path,
@@ -132,6 +127,8 @@ export default function SubmmissionAccordion(props) {
                     })
                     .then((res) => {
                         if (res.data.status) {
+                            props.sendToast("success", "Submission deleted")
+                            fetchAssignment();
                         } else {
                             props.sendToast("error", res.data.data);
                         }
@@ -276,7 +273,6 @@ export default function SubmmissionAccordion(props) {
                                         value={files}
                                         multiple={true}
                                         onChange={(newValue) => {
-                                            console.log(newValue);
                                             setFiles(newValue);
                                         }}
                                     />

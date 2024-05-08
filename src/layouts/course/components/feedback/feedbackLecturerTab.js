@@ -61,7 +61,7 @@ export default function FeedbackLecturerTab(props) {
                             {[...Array(8).keys()].map((i) => {
                                 return (
                                     <Grid item xs={1}>
-                                        Question {i}
+                                        Question {i + 1}
                                     </Grid>
                                 );
                             })}
@@ -89,7 +89,7 @@ export default function FeedbackLecturerTab(props) {
                                         "-" +
                                         index
                                     }>
-                                    <Grid item sx={{ padding: '0px 0 10px 0' }} xs={1}>{index}</Grid>
+                                    <Grid item sx={{ padding: '0px 0 10px 0' }} xs={1}>{index + 1}</Grid>
                                     <Grid item sx={{ padding: '0px 0 10px 0' }} xs={2}>{feedback.student_id}</Grid>
                                     {[...Array(8).keys()].map((i) => {
                                         return (
