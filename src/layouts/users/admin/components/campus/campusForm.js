@@ -2,6 +2,7 @@ import { Grid, FormControl, Button, TextField, InputLabel, Select, MenuItem, Div
 import { useState } from "react";
 import axios from "axios";
 import Constants from "../../../../../utils/constants";
+import { getArrayCache } from "../../../../../utils/dataOptimizer";
 
 export default function CampusForm(props) {
   const [roomId, setRoomId] = useState(props.room.id);
@@ -9,16 +10,27 @@ export default function CampusForm(props) {
   const [building, setBuilding] = useState(props.room.building);
   const [number, setNumber] = useState(props.room.number);
   const [capacity, setCapacity] = useState(props.room.capacity);
+  const [test, setTest] = useState(props.room.test);
 
   const constants = new Constants();
 
   const validateFormData = () => {
-    if (building === " " || building === "" || !building) {
+    if (building.trim() === "" || !building) {
       props.sendToast("error", "Invalid building");
       return false;
+      
     }
 
-    if (number === " " || number === "" || !number) {
+    let rooms = getArrayCache("roomsData");
+    let existingRoom = rooms.find((r) => r.number === number);
+    if (existingRoom) {
+    props.sendToast("error", "already exists");
+    return false;
+  }
+
+  if (number.trim() === "" || !number || number === props.room.number) {
+      console.log(number)
+      
       props.sendToast("error", "Invalid number");
       return false;
     }
@@ -38,6 +50,7 @@ export default function CampusForm(props) {
       building: building,
       number: number,
       capacity: capacity,
+      test: test,
     };
 
     if (!validateFormData()) {
@@ -110,6 +123,9 @@ export default function CampusForm(props) {
         </Grid>
         <Grid item xs={12} md={12}>
           <TextField type="number" value={capacity} onChange={(e) => setCapacity(e.target.value)} id="form-capacity" fullWidth label="Maximum Capacity" variant="outlined" />
+        </Grid>
+        <Grid item xs={12} md={12}>
+          <TextField  value={test} onChange={(e) => setTest(e.target.value)} id="form-test" fullWidth label="Test" variant="outlined" />
         </Grid>
         <Grid item xs={12} md={6}>
           <Button fullWidth variant="contained" sx={{ padding: "15px 30px" }} onClick={(e) => handleConfirm(e)}>
